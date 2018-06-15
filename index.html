@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="content-language" content="zh-tw">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+    <title>Filter - THE F2E</title>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/filter.css">
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <header>
+            <h1 class="logo" href="">HaveFun</h1>
+            <input type="text" class="search">
+        </header>
+        <div class="row">
+            <form class="col-12 col-md-3">
+                <fieldset class="filter">
+                    <h3>選擇地區：</h3>
+                    <select></select>
+                </fieldset>
+                <fieldset class="filter">
+                    <label><input type="checkbox">全天候開放</label>
+                    <label><input type="checkbox">免費參觀</label>
+                </fieldset>
+            </div>
+            <div class="col-12 col-md-9">
+                <ul class="locations">
+                    <li class="media">
+                        <img class="d-flex mr-3" src="" alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h2 class="mt-0">Media heading</h2>
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in
+                            vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis
+                            in faucibus.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        let Location = {
+            template: ``
+        }
+        let vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+
+            },
+            components: {
+                Location
+            },
+              mounted() {
+                axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97')
+                    .then(res => {
+                        this.res = res;
+                    })
+                    .catch(error => console.log(error))
+            },
+        });
+    </script>
+</body>
+
+</html>
