@@ -26,7 +26,7 @@
                 <form>
                     <fieldset class="filter">
                         <h3>選擇地區：</h3>
-                        <select v-model="currentZone">
+                        <select v-model="currentZone" @change="filteredByZone">
                             <option :value="null">全部</option>
                             <option v-for="zone in zoneList" :value="zone">{{ zone }}</option>
                         </select>
@@ -40,7 +40,7 @@
             <div class="col-12 col-md-9">
                 <p>結果：筆</p>
                 <ul class="locations">
-                    <li class="media" v-for="item in filteredByZone">
+                    <li class="media" v-for="item in currentResult">
                         <img class="d-flex align-self-start mr-3" :src="item.Picture1" alt="Generic placeholder image">
                         <div class="media-body">
                             <h2 class="mt-0">{{ item.Name }}</h2>
@@ -76,33 +76,35 @@
                     '旗津區',
                     '小港區'
                 ],
-                currentZone: ''
+                currentZone: '',
+                currentResult: []
             },
             computed: {
+
+            },
+            methods: {
                 filteredByZone() {
                     let result = [];
                     if (!this.currentZone) {
                         result = this.locationList;
                     } else {
                         this.locationList.forEach(obj => {
-                            if(obj.Zone === this.currentZone){
+                            if (obj.Zone === this.currentZone) {
                                 result.push(obj);
                             }
                         });
                     }
-                    return result;
+                    this.currentResult = result;
                 }
-            },
-            methods: {
-
             },
             components: {
                 Location
             },
-              created() {
+              mounted() {
                 axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97')
                     .then(res => {
                         this.locationList = res.data.result.records;
+                        this.currentResult =  res.data.result.records;
                     })
                     .catch(error => console.log(error))
             },
