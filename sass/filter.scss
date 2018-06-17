@@ -13,6 +13,10 @@ header {
 }
 .sidebar {
     background-color: #EBEBEB;
+    .search,
+    select {
+        width: 100%;
+    }
     fieldset {
         padding: 24px 40px;
         border-bottom: 1px solid #d7d7d7;
@@ -23,7 +27,8 @@ header {
     label {
         display: block;
     }
-    input {
+    input,
+    select {
         border: 0;
         background-color: #fff;
     }
