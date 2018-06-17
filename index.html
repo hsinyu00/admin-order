@@ -32,8 +32,8 @@
                 <div class="sidebar">
                     <form>
                         <fieldset>
-                            <h3>關鍵字搜尋：</h3>
-                            <input type="text" class="search">
+                            <h3>景點名稱搜尋：</h3>
+                            <input type="text" class="search" v-model="queryString" @keyup="queryList">
                         </fieldset>
                     </form>
                     <form>
@@ -92,7 +92,8 @@
                 ],
                 currentZone: '',
                 currentResult: [],
-                conditions: []
+                conditions: [],
+                queryString: ''
             },
             computed: {
                 total() {
@@ -100,6 +101,21 @@
                 }
             },
             methods: {
+                queryList(e) {
+                    e.stopPropagation();
+                    if (e.keyCode === 13) {
+                        if(this.queryString) {
+                            let result = [];
+                            let queryExp = new RegExp(this.queryString, 'gi');
+                            this.locationList.forEach(obj => {
+                                if (obj.Name.match(queryExp)) {
+                                    result.push(obj);
+                                }
+                            });
+                            this.currentResult = result;
+                        }
+                    }
+                },
                 changeZone() {
                     this.conditions = [];
                     this.filteredByZone();
@@ -170,7 +186,7 @@
                         this.locationList = res.data.result.records;
                         this.currentResult =  res.data.result.records;
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => console.log(error));
             },
         });
     </script>
