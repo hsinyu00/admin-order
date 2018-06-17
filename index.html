@@ -32,6 +32,7 @@
                         </select>
                     </fieldset>
                     <fieldset class="filter">
+                        <h3>從本地區篩選：</h3>
                         <label><input type="checkbox" value="全天候開放" name="filterGroup" v-model="conditions" @change="filteredByConditions">全天候開放</label>
                         <label><input type="checkbox" value="免費參觀" name="filterGroup" v-model="conditions" @change="filteredByConditions">免費參觀</label>
                     </fieldset>
@@ -148,7 +149,7 @@
                 }
             },
             mounted() {
-                axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97')
+                axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97&limit=300')
                     .then(res => {
                         this.locationList = res.data.result.records;
                         this.currentResult =  res.data.result.records;
