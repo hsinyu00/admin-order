@@ -13,43 +13,59 @@
     <link rel="stylesheet" href="css/filter.css">
     <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container" id="app">
-        <header>
-            <h1 class="logo" href="">Have</h1>
-            <input type="text" class="search">
-        </header>
+    <header>
+        <div class="container">
+            <div class="logo" href="/"></div>
+        </div>
+    </header>
+    <div class="container" id="app" v-cloak>
         <div class="row">
-            <div class="col-12 col-md-3">
-                <form>
-                    <fieldset class="filter">
-                        <h3>選擇地區：</h3>
-                        <select v-model="currentZone" @change="changeZone">
-                            <option :value="null">全部</option>
-                            <option v-for="zone in zoneList" :value="zone">{{ zone }}</option>
-                        </select>
-                    </fieldset>
-                    <fieldset class="filter">
-                        <h3>從本地區篩選：</h3>
-                        <label><input type="checkbox" value="全天候開放" name="filterGroup" v-model="conditions" @change="filteredByConditions">全天候開放</label>
-                        <label><input type="checkbox" value="免費參觀" name="filterGroup" v-model="conditions" @change="filteredByConditions">免費參觀</label>
-                    </fieldset>
-                </form>
+            <div class="col-12 col-md-4">
+                <div class="sidebar">
+                    <form>
+                        <fieldset>
+                            <h3>關鍵字搜尋：</h3>
+                            <input type="text" class="search">
+                        </fieldset>
+                    </form>
+                    <form>
+                        <fieldset class="filter">
+                            <h3>選擇地區：</h3>
+                            <select v-model="currentZone" @change="changeZone">
+                                <option :value="null">全部</option>
+                                <option v-for="zone in zoneList" :value="zone">{{ zone }}</option>
+                            </select>
+                        </fieldset>
+                        <fieldset class="filter">
+                            <h3>從本地區篩選：</h3>
+                            <label><input type="checkbox" value="全天候開放" name="filterGroup" v-model="conditions" @change="filteredByConditions"> 全天候開放</label>
+                            <label><input type="checkbox" value="免費參觀" name="filterGroup" v-model="conditions" @change="filteredByConditions"> 免費參觀</label>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
-            <div class="col-12 col-md-9">
-                <p>結果：{{ total }}筆</p>
+            <div class="col-12 col-md-8">
+                <p class="count">結果：<em>{{ total }}</em> 筆</p>
                 <ul class="locations">
                     <li class="media" v-for="item in currentResult">
-                        <img class="d-flex align-self-start mr-3" :src="item.Picture1" :alt="item.Name">
+                        <img class="d-block d-md-flex align-self-start" :src="item.Picture1" :alt="item.Name">
                         <div class="media-body">
-                            <h2 class="mt-0">{{ item.Name }}</h2>
-                            <p>{{ item.Description }}</p>
-                            <span>{{ item.Opentime }}</span>
-                            <span>{{ item.Ticketinfo }}</span>
-                            <span>{{ item.Tel }}</span>
-                            <span>{{ item.Add }}</span>
+                            <h2>{{ item.Name }} <span class="zone">{{ item.Zone }}</span></h2>
+                            <p class="desc">{{ item.Description }}</p>
+                            <div class="info">
+                                <span><i class="far fa-calendar-alt"></i> {{ item.Opentime }}</span>
+                                <span><i class="fas fa-dollar-sign"></i> {{ item.Ticketinfo }}</span>
+                            </div>
+                            <div class="contact"><i class="fas fa-phone"></i> {{ item.Tel }}</div>
+                            <div class="contact"><i class="fas fa-map-marker-alt"></i> {{ item.Add }}</div>
                         </div>
                     </li>
                 </ul>
