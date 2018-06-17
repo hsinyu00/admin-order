@@ -32,8 +32,8 @@
                         </select>
                     </fieldset>
                     <fieldset class="filter">
-                        <label><input type="checkbox">全天候開放</label>
-                        <label><input type="checkbox">免費參觀</label>
+                        <label><input type="checkbox" value="全天候開放" v-model="conditions" @change="filteredByConditions">全天候開放</label>
+                        <label><input type="checkbox" value="免費參觀" v-model="conditions" @change="filteredByConditions">免費參觀</label>
                     </fieldset>
                 </form>
             </div>
@@ -77,7 +77,8 @@
                     '小港區'
                 ],
                 currentZone: '',
-                currentResult: []
+                currentResult: [],
+                conditions: []
             },
             computed: {
 
@@ -95,6 +96,60 @@
                         });
                     }
                     this.currentResult = result;
+                },
+                filteredByConditions() {
+                    let result = this.currentResult;
+                    let remain = [];
+                    //let remain = this.todos.filter(obj => obj.completed === false);
+
+                    //1. remain = this.currentResult.filter(obj => obj['Opentime'] === '全天候開放');
+
+                    //2. remian = this.currentResult.forEach(curObj => {
+                        // currentResult 的每一筆，找出所有的 key
+                        // 找出 key 的 value 符合 '全天候開放' 的
+                        // return Object.keys(curObj).find(key => curObj[key] === '全天候開放');
+                    // });
+
+                    //3.
+                     this.currentResult.forEach(curObj => {
+                        //currentResult 的每一筆，找出所有的 key
+                        //找出 key 的 value 符合目前這個 condition 的 (如：'全天候開放')
+                        this.conditions.forEach(condition => {
+                            Object.keys(curObj).forEach(key =>   {
+                                if(curObj[key] === condition){
+                                    remain.push(curObj); // 找出後 push 到一個新陣列，下一輪篩選拿他做 base
+                                }
+                            });
+                            let remain2 = Object.keys(curObj).find(key => {
+                                return curObj[key] === condition;
+                            });
+                            console.log(remain2, remain2.length);
+                         });
+                     });
+
+                    //4. let result = this.currentResult;
+                    /*this.conditions.forEach(condition => {
+                        remain = result.filter(curObj => {
+                            let step = Object.keys(curObj).find(key => {
+                                return curObj[key] === condition;
+                            });
+                            console.log('step',step);
+                            return step;
+                        });
+                        console.log(remain);
+                        //result = remain;
+                    });*/
+
+
+
+                    //result = this.currentResult.map(curObj => { // 目前結果的每一筆
+                      //  this.conditions.forEach(condition => { // 篩選條件陣列的每一項
+                        //        return Object.keys(curObj).find(key => curObj[key] === condition);
+                          //  }
+                       // );
+                    //});
+                    //console.log('result', result);
+
                 }
             },
             components: {
