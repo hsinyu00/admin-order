@@ -26,14 +26,14 @@
                 <form>
                     <fieldset class="filter">
                         <h3>選擇地區：</h3>
-                        <select v-model="currentZone" @change="filteredByZone">
+                        <select v-model="currentZone" @change="changeZone">
                             <option :value="null">全部</option>
                             <option v-for="zone in zoneList" :value="zone">{{ zone }}</option>
                         </select>
                     </fieldset>
                     <fieldset class="filter">
-                        <label><input type="checkbox" value="全天候開放" v-model="conditions" @change="filteredByConditions">全天候開放</label>
-                        <label><input type="checkbox" value="免費參觀" v-model="conditions" @change="filteredByConditions">免費參觀</label>
+                        <label><input type="checkbox" value="全天候開放" name="filterGroup" v-model="conditions" @change="filteredByConditions">全天候開放</label>
+                        <label><input type="checkbox" value="免費參觀" name="filterGroup" v-model="conditions" @change="filteredByConditions">免費參觀</label>
                     </fieldset>
                 </form>
             </div>
@@ -41,7 +41,7 @@
                 <p>結果：{{ total }}筆</p>
                 <ul class="locations">
                     <li class="media" v-for="item in currentResult">
-                        <img class="d-flex align-self-start mr-3" :src="item.Picture1" alt="Generic placeholder image">
+                        <img class="d-flex align-self-start mr-3" :src="item.Picture1" :alt="item.Name">
                         <div class="media-body">
                             <h2 class="mt-0">{{ item.Name }}</h2>
                             <p>{{ item.Description }}</p>
@@ -56,9 +56,6 @@
         </div>
     </div>
     <script>
-        let Location = {
-            template: ``
-        }
         let vm = new Vue({
             el: "#app",
             data: {
@@ -86,8 +83,11 @@
                 }
             },
             methods: {
-                filteredByZone() {
+                changeZone() {
                     this.conditions = [];
+                    this.filteredByZone();
+                },
+                filteredByZone() {
                     let stepResult = [];
                     if (!this.currentZone) {
                         stepResult = this.locationList;
@@ -125,7 +125,7 @@
                           //  console.log(remain);
                        //  });
                     // });
-
+                    this.filteredByZone();
                     if(this.conditions.length > 0) {
                         let stepResult = this.currentResult;
                         let remain = [];
@@ -147,10 +147,7 @@
                     }
                 }
             },
-            components: {
-                Location
-            },
-              mounted() {
+            mounted() {
                 axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97')
                     .then(res => {
                         this.locationList = res.data.result.records;
