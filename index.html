@@ -5,14 +5,15 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
     <meta http-equiv="content-language" content="zh-tw">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
-    <title>Filter - THE F2E</title>
+    <title>Admin Order - THE F2E</title>
     <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/filter.css">
+    <link rel="stylesheet" href="css/admin-order.css">
     <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="js/faker.min.js"></script>
     <style>
         [v-cloak] {
             display: none;
@@ -21,175 +22,151 @@
 </head>
 
 <body>
-    <header>
+    <div id="app">
+        <header>
+            <div class="container">
+                <a class="logo" href="">Shoptime</a>
+                <a class="active" href="">HOME</a>
+                <a href="">ORDER</a>
+                <a href="">PRODUCT</a>
+            </div>
+        </header>
         <div class="container">
-            <div class="logo"></div>
-        </div>
-    </header>
-    <div class="container" id="app" v-cloak>
-        <div class="row">
-            <div class="col-12 col-md-4">
-                <div class="sidebar">
-                    <form>
-                        <fieldset>
-                            <h3>景點名稱搜尋：</h3>
-                            <input type="text" class="search" v-model="queryString" @keyup="queryList">
-                        </fieldset>
-                    </form>
-                    <form>
-                        <fieldset class="filter">
-                            <h3>選擇地區：</h3>
-                            <select v-model="currentZone" @change="changeZone">
-                                <option :value="null">全部</option>
-                                <option v-for="zone in zoneList" :value="zone">{{ zone }}</option>
-                            </select>
-                        </fieldset>
-                        <fieldset class="filter">
-                            <h3>從本地區篩選：</h3>
-                            <label><input type="checkbox" value="全天候開放" name="filterGroup" v-model="conditions" @change="filteredByConditions"> 全天候開放</label>
-                            <label><input type="checkbox" value="免費參觀" name="filterGroup" v-model="conditions" @change="filteredByConditions"> 免費參觀</label>
-                        </fieldset>
-                    </form>
+            <h2 class="section-title">OVERVIEW</h2>
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <section class="white-box">
+                        <div class="field"><i class="fas fa-hand-holding-usd"></i> TOTAL REVENUE</div>
+                        <div class="amount amount--green">{{ totalRevenue | dollar }}</div>
+                    </section>
+                </div>
+                <div class="col-12 col-md-4">
+                    <section class="white-box">
+                        <div class="field"><i class="fas fa-boxes"></i> TOTAL COST</div>
+                        <div class="amount amount--red">{{ totalCost | dollar }}</div>
+                    </section>
+                </div>
+                <div class="col-12 col-md-4">
+                    <section class="white-box">
+                        <div class="field"><i class="fas fa-money-bill"></i> NET INCOME</div>
+                        <div class="amount amount--blue">{{ netIncome | dollar }}</div>
+                    </section>
                 </div>
             </div>
-            <div class="col-12 col-md-8">
-                <p class="count">結果：<em>{{ total }}</em> 筆</p>
-                <ul class="locations">
-                    <li class="media" v-for="item in currentResult">
-                        <img class="d-block d-md-flex align-self-start" :src="item.Picture1" :alt="item.Name">
-                        <div class="media-body">
-                            <h2>{{ item.Name }} <span class="zone">{{ item.Zone }}</span></h2>
-                            <p class="desc">{{ item.Description }}</p>
-                            <div class="info">
-                                <span><i class="far fa-calendar-alt"></i> {{ item.Opentime }}</span>
-                                <span><i class="fas fa-dollar-sign"></i> {{ item.Ticketinfo }}</span>
-                            </div>
-                            <div class="contact"><i class="fas fa-phone"></i> {{ item.Tel }}</div>
-                            <div class="contact"><i class="fas fa-map-marker-alt"></i> {{ item.Add }}</div>
-                        </div>
-                    </li>
-                </ul>
+
+            <section class="white-box" id="chart">
+                <h2 class="section-title">Activity</h2>
+                <canvas id="activity"></canvas>
+            </section>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <section class="white-box">
+                        <h2 class="section-title">Transaction Website</h2>
+                        <ul class="data-list">
+                            <li>
+                                <i class="fab fa-facebook"></i>
+                                <div class="data-list-name">Facebook.com</div>
+                                <div class="data-list-trans">45,836</div>
+                                <div class="data-list-rate up">
+                                    <i class="fas fa-arrow-up"></i> 15%</div>
+                            </li>
+                            <li>
+                                <i class="fab fa-google"></i>
+                                <div class="data-list-name">Google.com</div>
+                                <div class="data-list-trans">45,836</div>
+                                <div class="data-list-rate up">
+                                    <i class="fas fa-arrow-up"></i> 20%</div>
+                            </li>
+                            <li>
+                                <i class="fab fa-amazon"></i>
+                                <div class="data-list-name">Amazon.com</div>
+                                <div class="data-list-trans">35,836</div>
+                                <div class="data-list-rate down">
+                                    <i class="fas fa-arrow-down"></i> 10%</div>
+                            </li>
+                            <li>
+                                <i class="fab fa-ebay"></i>
+                                <div class="data-list-name">Ebay.com</div>
+                                <div class="data-list-trans">15,836</div>
+                                <div class="data-list-rate down">
+                                    <i class="fas fa-arrow-down"></i> 30%</div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+                <div class="col-12 col-md-6">
+                    <section class="white-box">
+                        <h2 class="section-title">Latest Order</h2>
+                        <latest-order v-for="item in orderArray"
+                        :key="item.productName"
+                        :img-src="item.imgSrc"
+                        :product-name="item.productName"
+                        :date="item.date"
+                        :user-name="item.userName"
+                        :total="item.total"></latest-order>
+                    </section>
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        let vm = new Vue({
-            el: "#app",
-            data: {
-                locationList: '',
-                zoneList: [
-                    '楠梓區',
-                    '左營區',
-                    '鼓山區',
-                    '三民區',
-                    '苓雅區',
-                    '新興區',
-                    '前金區',
-                    '鹽埕區',
-                    '前鎮區',
-                    '旗津區',
-                    '小港區'
-                ],
-                currentZone: '',
-                currentResult: [],
-                conditions: [],
-                queryString: ''
-            },
-            computed: {
-                total() {
-                    return this.currentResult.length;
-                }
-            },
-            methods: {
-                queryList(e) {
-                    e.stopPropagation();
-                    if (e.keyCode === 13) {
-                        if(this.queryString) {
-                            let result = [];
-                            let queryExp = new RegExp(this.queryString, 'gi');
-                            this.locationList.forEach(obj => {
-                                if (obj.Name.match(queryExp)) {
-                                    result.push(obj);
-                                }
-                            });
-                            this.currentResult = result;
-                        }
-                    }
-                },
-                changeZone() {
-                    this.conditions = []; // 更換地區時，清空篩選條件
-                    this.filteredByZone();
-                },
-                filteredByZone() {
-                    let stepResult = [];
-                    if (!this.currentZone) {
-                        stepResult = this.locationList;
-                    } else {
-                        this.locationList.forEach(obj => {
-                            if (obj.Zone === this.currentZone) {
-                                stepResult.push(obj);
-                            }
-                        });
-                    }
-                    this.currentResult = stepResult;
-                },
-                filteredByConditions() {
-
-                    //1. remain = this.currentResult.filter(obj => obj['Opentime'] === '全天候開放');
-
-                    //2. remian = this.currentResult.forEach(curObj => {
-                        // currentResult 的每一筆，找出所有的 key
-                        // 找出 value 符合 '全天候開放' 的 key
-                        // return Object.keys(curObj).find(key => curObj[key] === '全天候開放');
-                        // key 為 Opentime
-                    // });
-
-                    //3.this.currentResult.forEach(curObj => {
-                        //currentResult 的每一筆，找出所有的 key
-                        //找出 value 符合 condition (如：'全天候開放') 的 key 名稱 (如：'Opentime')
-                        //this.conditions.forEach(condition => {
-                         //   Object.keys(curObj).forEach(key =>   {
-                           //     if(curObj[key] === condition){
-                             //       remain.push(curObj); // 找出後立刻 push 到一個新陣列，下一輪篩選拿他做 base
-                             //   }
-                          //  });
-                          //  console.log(remain);
-                       //  });
-                    // });
-
-                    this.filteredByZone();
-
-                    if(this.conditions.length > 0) {
-                        let stepResult = this.currentResult;
-                        let remain = [];
-                        this.conditions.forEach(condition => {
-                            stepResult.forEach(curObj => {
-                                Object.keys(curObj).forEach(key => {
-                                    if (curObj[key] === condition) {
-                                        remain.push(curObj);
-                                    }
-                                });
-                            });
-                            console.log(remain);
-                            stepResult = remain;
-                            remain = [];
-                        });
-                        this.currentResult = stepResult;
-                    } else {
-                        return;
-                    }
-                }
-            },
-            mounted() {
-                axios.get('https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97&limit=300')
-                    .then(res => {
-                        this.locationList = res.data.result.records;
-                        this.currentResult =  res.data.result.records;
-                    })
-                    .catch(error => console.log(error));
-            },
-        });
-    </script>
 </body>
-
+<script src="js/dummy-data.js" type="text/javascript"></script>
+<script src="js/chart-config.js" type="text/javascript"></script>
+<script>
+    let latestOrder = {
+        props: {
+            imgSrc: {
+                type: String,
+                required: true
+            },
+            productName: {
+                type: String,
+                required: true
+            },
+            date: {
+                type: String,
+                required: true
+            },
+            userName: {
+                type: String,
+                required: true
+            },
+            total: {
+                type: Number,
+                required: true
+            }
+        },
+        template: `
+        <div class="media">
+            <img :src="imgSrc" alt="">
+            <div class="media-body">
+                <h5>{{ productName }}</h5>
+                <div class="detail"><i class="fas fa-clock"></i> {{ date }} 13:42</div>
+                <div class="detail"><i class="fas fa-male"></i> {{ userName }}</div>
+                <div class="total"><span>Total</span><br>{{ total | dollar }}</div>
+            </div>
+        </div>
+        `
+    }
+    Vue.filter('dollar', function (value) {
+        console.log('filter')
+        return value.toLocaleString()
+    })
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            totalRevenue: totalRevenue,
+            totalCost: totalCost,
+            netIncome: netIncome,
+            orderArray: orderArray
+        },
+        components: {
+            latestOrder
+        }
+    });
+    window.onload = function () {
+        var ctx = document.getElementById('activity').getContext('2d');
+        window.myLine = new Chart(ctx, config);
+    };
+</script>
 </html>

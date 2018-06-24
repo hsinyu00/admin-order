@@ -1,0 +1,65 @@
+body { background-color: #f2f2f2; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+header { background-color: #000; height: 70px; margin-bottom: 30px; }
+
+header .container { height: 100%; }
+
+header a { display: inline-block; color: #9b9b9b; font-size: 16px; height: 100%; line-height: 70px; padding: 0 15px; vertical-align: middle; }
+
+header a:hover { text-decoration: none; color: #fff; }
+
+header .active { color: #fff; -webkit-box-shadow: 0 -4px 0 0 #fff inset; box-shadow: 0 -4px 0 0 #fff inset; }
+
+header .logo { font-size: 24px; color: #fff; padding: 0 42px; }
+
+.white-box { background: #FFFFFF; -webkit-box-shadow: 0 0 10px 5px #EBEBEB; box-shadow: 0 0 10px 5px #EBEBEB; border-radius: 3px; padding: 30px 40px; margin-bottom: 30px; }
+
+.section-title { font-size: 24px; color: #000; margin: 0 0 30px; }
+
+.field { color: #000; font-size: 16px; text-align: center; }
+
+.field .fa { font-size: 24px; }
+
+.amount { font-size: 36px; font-weight: bold; text-align: center; }
+
+.amount--green { color: #7ED321; }
+
+.amount--red { color: #D0021B; }
+
+.amount--blue { color: #4A90E2; }
+
+.locations { padding: 0; }
+
+.media { background-color: #fff; padding: 5px 0; border-bottom: 1px solid #EBEBEB; }
+
+.media img { width: 100px; }
+
+.media h2 { font-size: 24px; color: #9013FE; margin-bottom: 16px; position: relative; padding-right: 65px; }
+
+.media-body { position: relative; padding-left: 20px; }
+
+.media-body .detail { font-size: 16px; color: #9B9B9B; }
+
+.media-body .detail .fa-clock { font-size: 12px; }
+
+.media-body .detail .fa-male { font-size: 20px; }
+
+.media-body .total { position: absolute; right: 0; bottom: 0; text-align: right; color: #000; font-size: 20px; }
+
+.media-body .total span { font-size: 14px; }
+
+.data-list { list-style-type: none; padding: 0; border-bottom: 1px solid #EBEBEB; }
+
+.data-list li { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; padding: 24px 0; }
+
+.data-list li .fab { -webkit-box-flex: 1; -ms-flex: 1 0 auto; flex: 1 0 auto; padding-right: 10px; color: #000; font-size: 40px; }
+
+.data-list-name { -webkit-box-flex: 0; -ms-flex: 0 1 auto; flex: 0 1 auto; width: 55%; color: #9B9B9B; font-size: 16px; }
+
+.data-list-trans { -webkit-box-flex: 0; -ms-flex: 0 1 auto; flex: 0 1 auto; width: 25%; font-size: 20px; }
+
+.data-list-rate { -webkit-box-flex: 0; -ms-flex: 0 1 auto; flex: 0 1 auto; width: 20%; font-size: 16px; }
+
+.data-list-rate.up { color: #7ED321; }
+
+.data-list-rate.down { color: #D0021B; }
