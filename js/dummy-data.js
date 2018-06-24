@@ -26,8 +26,8 @@ netIncome = totalRevenue - totalCost;
 // Latest Order
 let orderArray = [];
 function Order(index) {
-    this.imgSrc = 'https://lorempixel.com/300/300/fashion?' + 'v' + index,
-        this.productName = faker.commerce.productName();
+    this.imgSrc = "https://placeimg.com/300/300/people?" + "v" + index;
+    this.productName = faker.commerce.productName();
     this.date = faker.date.past().toDateString();
     this.userName = faker.name.firstName() + ' ' + faker.name.lastName();
     this.total = parseInt(faker.commerce.price() * 10, 10);
