@@ -149,8 +149,7 @@
         `
     }
     Vue.filter('dollar', function (value) {
-        console.log('filter')
-        return value.toLocaleString()
+        return value.toLocaleString();
     })
     let vm = new Vue({
         el: '#app',
